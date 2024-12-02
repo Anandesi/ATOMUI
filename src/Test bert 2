@@ -1,0 +1,190 @@
+from bertopic import BERTopic
+from sklearn.feature_extraction.text import CountVectorizer
+from typing import Optional, Union, Any
+
+
+class BertTopicWrapper:
+    def __init__(
+        self,
+        model_id: str,
+        embedding_model: Optional[Union[str, Any]] = None,
+        vectorizer_model: Optional[Any] = None,
+        dimensionality_reduction_model: Optional[Any] = None,
+        calculate_probabilities: Optional[bool] = None,
+        verbose: Optional[bool] = None,
+        **kwargs,
+    ):
+        """
+        Initialize the BertTopicWrapper with only the provided parameters.
+
+        Args:
+            model_id (str): Unique identifier for the model instance.
+            embedding_model (str or callable, optional): Pre-trained embedding model or custom callable.
+            vectorizer_model (sklearn object, optional): Custom vectorizer model (e.g., `CountVectorizer`).
+            dimensionality_reduction_model (sklearn object, optional): Custom dimensionality reduction model (e.g., `PCA`).
+            calculate_probabilities (bool, optional): Whether to calculate topic probabilities.
+            verbose (bool, optional): Whether to print verbose logs.
+            **kwargs: Additional keyword arguments for BERTopic initialization.
+        """
+        self.model_id = model_id
+
+        # Dynamically build the arguments for BERTopic initialization
+        bertopic_params = {}
+        if embedding_model is not None:
+            bertopic_params['embedding_model'] = embedding_model
+        if vectorizer_model is not None:
+            bertopic_params['vectorizer_model'] = vectorizer_model
+        if dimensionality_reduction_model is not None:
+            bertopic_params['dimensionality_reduction_model'] = dimensionality_reduction_model
+        if calculate_probabilities is not None:
+            bertopic_params['calculate_probabilities'] = calculate_probabilities
+        if verbose is not None:
+            bertopic_params['verbose'] = verbose
+
+        # Add any additional keyword arguments
+        bertopic_params.update(kwargs)
+
+        # Initialize BERTopic with the dynamically built parameters
+        self.model = BERTopic(**bertopic_params)
+
+    def fit(self, documents, y=None):
+        """
+        Fit the BERTopic model to the provided documents.
+
+        Args:
+            documents (list of str): The input documents for topic modeling.
+            y (list, optional): Target labels for semi-supervised learning.
+
+        Returns:
+            list: The topics identified for each document.
+        """
+        return self.model.fit_transform(documents, y)
+
+    def transform(self, documents):
+        """
+        Transform new documents into topic space.
+
+        Args:
+            documents (list of str): The input documents to transform.
+
+        Returns:
+            list: The topics identified for each document.
+        """
+        return self.model.transform(documents)
+
+    def fit_transform(self, documents, y=None):
+        """
+        Fit the BERTopic model and transform documents simultaneously.
+
+        Args:
+            documents (list of str): The input documents for topic modeling.
+            y (list, optional): Target labels for semi-supervised learning.
+
+        Returns:
+            tuple: A tuple containing the topics and probabilities (if enabled).
+        """
+        return self.model.fit_transform(documents, y)
+
+    def get_topic_info(self):
+        """
+        Retrieve information about the identified topics.
+
+        Returns:
+            pandas.DataFrame: DataFrame with topic details.
+        """
+        return self.model.get_topic_info()
+
+    def get_topics(self):
+        """
+        Retrieve the topics identified by the model.
+
+        Returns:
+            dict: A dictionary of topics with their corresponding keywords.
+        """
+        return self.model.get_topics()
+
+    def update_topics(self, documents, topics, n_grams=None):
+        """
+        Update the topics based on new documents or input topics.
+
+        Args:
+            documents (list of str): The input documents for topic updating.
+            topics (list of int): The topics for the corresponding documents.
+            n_grams (tuple, optional): The range of n-grams for topic generation.
+        """
+        self.model.update_topics(documents, topics, n_grams=n_grams)
+
+    def visualize_topics(self):
+        """
+        Visualize the topics using a static or interactive plot.
+
+        Returns:
+            plotly.graph_objects.Figure: A visualization of the topics.
+        """
+        return self.model.visualize_topics()
+
+    def save_model(self, file_path):
+        """
+        Save the BERTopic model to a file.
+
+        Args:
+            file_path (str): Path to save the model.
+        """
+        self.model.save(file_path)
+
+    @staticmethod
+    def load_model(file_path):
+        """
+        Load a BERTopic model from a file.
+
+        Args:
+            file_path (str): Path to the saved model.
+
+        Returns:
+            BertTopicWrapper: The loaded BertTopicWrapper instance.
+        """
+        model = BERTopic.load(file_path)
+        wrapper = BertTopicWrapper(model_id="loaded_model")
+        wrapper.model = model
+        return wrapper
+
+
+
+
+
+
+
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.decomposition import PCA
+from sentence_transformers import SentenceTransformer
+
+# Example documents
+documents = ["Artificial intelligence is fascinating.",
+             "Machine learning is a subset of AI.",
+             "Natural language processing enables machines to understand text."]
+
+# Initialize wrapper with custom embedding model
+embedding_model = SentenceTransformer("all-MiniLM-L6-v2")
+wrapper = BertTopicWrapper(
+    model_id="custom_model",
+    embedding_model=embedding_model,
+    vectorizer_model=TfidfVectorizer(max_features=1000),
+    dimensionality_reduction_model=PCA(n_components=5),
+    calculate_probabilities=True,
+    verbose=True
+)
+
+# Fit the model
+topics, probabilities = wrapper.fit_transform(documents)
+
+# Retrieve topic information
+print(wrapper.get_topic_info())
+
+# Save the model
+wrapper.save_model("bertopic_model")
+
+# Load the model
+loaded_wrapper = BertTopicWrapper.load_model("bertopic_model")
+print(loaded_wrapper.get_topic_info())
+
+
