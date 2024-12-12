@@ -1,0 +1,68 @@
+import torch
+from transformers import AutoTokenizer, AutoModel
+
+class EmbeddingModelWrapper:
+    def __init__(self, model_name: str):
+        """
+        Initialize the embedding model wrapper.
+
+        Args:
+            model_name (str): Hugging Face model name or path for the embedding model.
+        """
+        self.model_name = model_name
+        self.tokenizer = AutoTokenizer.from_pretrained(model_name)
+        self.model = AutoModel.from_pretrained(model_name, output_hidden_states=True)  # Enable hidden states
+        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        self.model.to(self.device)
+
+    def get_embedding(self, text: str, pooling: str = "cls", layer: int = -1, max_length: int = 128):
+        """
+        Generate embeddings for a given text input, optionally from a specific layer.
+
+        Args:
+            text (str): The input text to generate an embedding for.
+            pooling (str): Pooling strategy ('cls' or 'mean'). Defaults to 'cls'.
+            layer (int): The layer from which to extract embeddings. Defaults to -1 (last layer).
+            max_length (int): Maximum token length for input. Defaults to 128.
+
+        Returns:
+            torch.Tensor: Embedding vector.
+        """
+        # Tokenize input text
+        inputs = self.tokenizer(
+            text, return_tensors="pt", truncation=True, max_length=max_length, padding="max_length"
+        ).to(self.device)
+
+        # Generate embeddings
+        with torch.no_grad():
+            outputs = self.model(**inputs)
+            hidden_states = outputs.hidden_states  # All layers' hidden states
+
+        # Extract the specified layer's embeddings
+        if layer < 0:
+            layer = len(hidden_states) + layer  # Handle negative indexing
+        if layer >= len(hidden_states):
+            raise ValueError(f"Invalid layer index. Must be in range [-{len(hidden_states)}, {len(hidden_states) - 1}].")
+
+        layer_embeddings = hidden_states[layer]  # Embeddings from the specified layer
+
+        # Apply pooling strategy
+        if pooling == "cls":
+            embedding = layer_embeddings[:, 0, :]  # CLS token
+        elif pooling == "mean":
+            embedding = torch.mean(layer_embeddings, dim=1)
+        else:
+            raise ValueError("Invalid pooling method. Choose 'cls' or 'mean'.")
+
+        return embedding.squeeze().cpu()
+
+# Example usage
+if __name__ == "__main__":
+    model_name = "sentence-transformers/all-MiniLM-L6-v2"
+    wrapper = EmbeddingModelWrapper(model_name)
+
+    text = "How can I get embeddings from different layers?"
+    embedding = wrapper.get_embedding(text, pooling="mean", layer=-2)  # Second-to-last layer
+
+    print("Generated Embedding:", embedding)
+    print("Embedding Shape:", embedding.shape)
