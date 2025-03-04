@@ -1,0 +1,118 @@
+Template 1: Notification to Validation Manager When a Task is Created by a Developer
+
+Subject: New {Dynamic Update Validation} Task ({task_id}) Assigned by {Developer Name} for Model {model_number}
+
+Dear {Validation Manager},
+
+You have received this automated notification because you are a stakeholder for the {Dynamic Update Validation} task ({task_id}) associated with model {model_number}.
+
+A new {Dynamic Update Validation} task has been created by {Developer Name} for Model {model_number}.
+
+We kindly request that you review this task and assign a suitable Validator to assist in the validation process.
+
+Task Details:
+	•	Task ID: {task_id}
+	•	Model Number: {model_number}
+	•	Developer(s): {Developer Name}
+	•	Validation Manager: {Validation Manager}
+	•	Validator(s): [To be assigned]
+	•	Validation Type: {Dynamic Update Validation}
+	•	Created At: {created_date_time}
+
+Best regards,
+[Your Application Name]
+
+
+
+
+Template 2: Notification to Validator When Assigned by Validation Manager
+
+Subject: {Dynamic Update Validation} Task ({task_id}) Assigned to You by {Validation Manager} for Model {model_number}
+
+Dear {Validator Name},
+
+You have received this automated notification because you have been assigned to the {Dynamic Update Validation} task ({task_id}) associated with model {model_number} by {Validation Manager}.
+
+Please review and proceed with the necessary validation steps.
+
+Task Details:
+	•	Task ID: {task_id}
+	•	Model Number: {model_number}
+	•	Developer(s): {Developer Name}
+	•	Validation Manager: {Validation Manager}
+	•	Validator(s): {Validator Name}
+	•	Validation Type: {Dynamic Update Validation}
+	•	Created At: {created_date_time}
+
+
+
+Template 3: Notification to Stakeholders When a New DU or MU Update is Created
+
+Subject: {Dynamic Update Validation} Task Update Created - Task ID {task_id} (ValOps Sequence: {sub_task_id}) for Model {model_number}
+
+Dear Stakeholder,
+
+You have received this automated notification because you are a stakeholder for the {Dynamic Update Validation} task ({task_id}) associated with model {model_number}.
+
+A new update has been created for this task with ValOps Sequence Number: {sub_task_id}.
+
+Task Details:
+	•	Task ID: {task_id}
+	•	Model Number: {model_number}
+	•	Developer(s): {Developer Name}
+	•	Validation Manager: {Validation Manager}
+	•	Validator(s): {Validator Name}
+	•	Validation Type: {Dynamic Update Validation}
+	•	Created At: {created_date_time}
+	•	ValOps Sequence Number: {sub_task_id}
+
+
+
+
+Template 1: Notification to New Validator When Reassigned by Validation Manager
+
+Subject: {Dynamic Update Validation} Task ({task_id}) Reassigned to You for Model {model_number}
+
+Dear {New Validator Name},
+
+You have received this automated notification because you have been reassigned as the primary validator for the {Dynamic Update Validation} task ({task_id}) associated with Model {model_number} by {Validation Manager}.
+
+Please review the task details and proceed with the necessary validation steps.
+
+Task Details:
+	•	Task ID: {task_id}
+	•	Model Number: {model_number}
+	•	Developer(s): {Developer Names}
+	•	Validation Manager: {Validation Manager}
+	•	Primary Validator: {New Validator Name}
+	•	Other Validators: {Other Validator Names}
+	•	Validation Type: {Dynamic Update Validation}
+	•	Created At: {created_date_time}
+	•	Reassigned By: {Validation Manager}
+
+
+
+Template 2: Notification to New Developer When Reassigned by Validation Manager
+
+Subject: {Dynamic Update Validation} Task ({task_id}) Reassigned to You for Model {model_number}
+
+Dear {New Developer Name},
+
+You have received this automated notification because you have been reassigned as the primary developer for the {Dynamic Update Validation} task ({task_id}) associated with Model {model_number} by {Validation Manager}.
+
+Please review the task details and proceed accordingly.
+
+Task Details:
+	•	Task ID: {task_id}
+	•	Model Number: {model_number}
+	•	Primary Developer: {New Developer Name}
+	•	Other Developers: {Other Developer Names}
+	•	Validation Manager: {Validation Manager}
+	•	Validator(s): {Validator Names}
+	•	Validation Type: {Dynamic Update Validation}
+	•	Created At: {created_date_time}
+	•	Reassigned By: {Validation Manager}
+
+
+
+
