@@ -1,0 +1,145 @@
+JIRA Ticket: Auto-Attach Validation Suite for Monitoring Update Validation Tasks
+
+Issue Type: Improvement
+Priority: Medium
+
+Summary
+
+The Monitoring Update Validation task should automatically attach the validation suite from the last update to the current update by default, similar to the behavior in Dynamic Update Validation tasks.
+
+Description
+
+Currently, when a new update occurs on a Monitoring Update Validation task, the validator is required to manually attach the validation suite. However, in many cases, the same validation suite is applicable across multiple updates over a period of time.
+
+This manual process is inefficient and can lead to unnecessary effort for validators. Instead, the system should automatically attach the validation suite from the last update to the current update by default, while still allowing validators to reassign or update the suite if needed.
+
+Acceptance Criteria
+	1.	Auto-Attach Last Used Validation Suite
+	•	When a new update occurs in a Monitoring Update Validation task, the system should automatically attach the validation suite used in the previous update.
+	•	The default attachment should work similarly to Dynamic Update Validation tasks.
+	2.	Allow Manual Reassignment
+	•	Validators should retain the ability to manually change or update the attached validation suite if necessary.
+	3.	Improve Validator Experience
+	•	Reduce manual effort for validators by ensuring continuity in validation suite assignment across updates.
+	•	Prevent potential errors caused by missing validation suite attachments.
+	4.	Audit & Logging
+	•	Maintain logs of when and how validation suites are attached or changed.
+	•	Ensure transparency in how the validation suite is inherited from previous updates.
+
+Dependencies & Considerations
+	•	Implementation should align with existing logic for Dynamic Update Validation tasks.
+	•	Ensure that this change does not introduce unintended side effects in workflows that rely on manual validation suite assignment.
+	•	Coordination with the development team to verify compatibility with existing validation task logic.
+
+Would you like to specify any edge cases, such as when a prior validation suite does not exist?
+
+
+
+
+
+
+
+
+
+
+
+JIRA Ticket: Ensure Model Properties Update on Re-Registration
+
+Issue Type: Bug
+Priority: High
+
+Summary
+
+When a model is updated and re-registered, its properties should be updated accordingly. Currently, only the “updated at” timestamp changes, while the model properties remain unchanged.
+
+Description
+
+When a model is registered for the first time, its properties are correctly stored. However, when developers update the model and re-register it, new or modified properties are not reflected in the system. Only the “updated at” timestamp is updated, but the properties remain the same as the initial registration.
+
+Example Issue:
+	•	Initial Model Registration Properties:
+
+TASKTYPE_BINARY_CLASSIFICATION, TRAINDATA, PREDICT, PREDICTPROBA, DATATYPE_TABULAR, MODELTYPE_ML
+
+
+	•	After Model Update (Expected Properties):
+
+TASKTYPE_BINARY_CLASSIFICATION, TRAINDATA, PREDICT, PREDICTPROBA, DATATYPE_TABULAR, MODELTYPE_ML, VALIDATIONDATA, TESTDATA, OOTDATA, RETRAIN, DATA_HAS_CATEGORICAL
+
+
+	•	Current Behavior: The system still displays only the original properties instead of reflecting the updated ones.
+
+Acceptance Criteria
+	1.	Model Property Updates on Re-Registration
+	•	When a model is updated and re-registered, the system should reflect the updated model properties.
+	•	Newly added properties must be stored and displayed correctly.
+	•	Removed properties should no longer appear in the stored metadata.
+	2.	Ensure Consistency Between UI and Database
+	•	The UI should accurately reflect the latest model properties after re-registration.
+	•	The database should store the updated property values.
+	3.	Audit & Logging
+	•	Maintain a log of property changes, including timestamps and details of modifications.
+	•	Ensure visibility into which properties were updated.
+	4.	Backward Compatibility & Performance
+	•	The update process should not impact existing models or registrations.
+	•	Performance should remain optimal even with frequent updates.
+
+Dependencies & Considerations
+	•	Requires modifications in the model registration workflow.
+	•	Database schema or update logic might need adjustments.
+	•	Coordination with the engineering team to ensure
+
+
+proper syncing between model updates and metadata storage.
+
+Would you like to add any constraints or validation rules for handling property updates?
+
+
+
+
+
+
+
+JIRA Ticket: Enable Validation Test Code Ownership at Group Level
+
+Issue Type: Story
+Priority: High
+
+Summary
+
+Enable validation test code ownership at the group level (e.g., Fraud-group, NLP group) and provide a clear changelog for all previous versions of the test code.
+
+Description
+
+To improve accountability and traceability, validation test code should be assignable to specific groups (e.g., Fraud-group, NLP group). Additionally, each version of the test code should include a changelog capturing key details such as:
+	•	Who updated the test code (validator).
+	•	Which gatekeeper from the group approved the changes for sign-off.
+	•	Version history of modifications.
+
+Acceptance Criteria
+	1.	Group-Level Ownership
+	•	Implement the ability to assign validation test code ownership to specific groups (e.g., Fraud-group, NLP group).
+	•	Ensure that only authorized members of a group can modify the associated test code.
+	2.	Changelog Implementation
+	•	Maintain a versioned changelog for each test code update.
+	•	Log details of changes, including:
+	•	Validator who made the update.
+	•	Group gatekeeper who approved the update.
+	•	Timestamps for each modification.
+	3.	Access Control & Permissions
+	•	Only designated validators within a group can update test code.
+	•	Gatekeepers must approve changes before they are finalized.
+	•	Read-only access for non-group members to review test code and history.
+	4.	UI/UX Considerations
+	•	Display test code ownership details in the UI.
+	•	Provide a user-friendly view of changelogs, showing version history and approval status.
+
+Dependencies & Considerations
+	•	Requires updates to the test code repository and associated metadata storage.
+	•	Integration with existing role-based access control (RBAC) mechanisms.
+	•	Coordination with DevOps and engineering teams for implementation.
+
+Would you like to add any additional details or constraints before finalizing?
+
+
+
