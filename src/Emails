@@ -116,3 +116,13 @@ Task Details:
 
 
 
+
+
+
+
+Thanks for your feedback.
+
+Recently, the first GenAI model (15300) was successfully validated by MRM. We have also started research to enable GenAI validation on ValOps.
+
+Regarding Tachyon, no real validation has taken place yet. Once a real model undergoes validation, we will begin working on supporting it as well.
+
