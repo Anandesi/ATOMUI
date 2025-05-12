@@ -1,1 +1,61 @@
 
+Title: ValOps R&D Progress on NLP Wrapper for GenAI Models
+
+
+
+We have developed a configurable and extensible NLP Wrapper framework to support seamless integration of GenAI and NLP models within the ValOps ecosystem. The wrapper provides a unified interface for working with various transformer-based architectures, including:
+
+Encoder-only models
+
+Decoder-only models
+
+Encoder-decoder models
+
+Embedding models
+
+
+
+Implemented Wrappers and Modules:
+
+HFSequenceClassificationEncoder
+
+Supports encoder-only models (e.g., DistilBERT) for sequence classification tasks.
+
+Use Case ID: 15203a
+
+Application: Binary classification model to detect biased language in appraisal documents.
+
+Key Methods: get_embeddings(), predict_proba(), predict()
+
+Test Code Highlights:
+
+Fitting BERTopic on training data to extract topic clusters
+
+Saving and visualizing BERTopic models with 2D plots for train/test data and predicted cluster memberships
+
+HFDecoder
+
+Supports decoder-only models (e.g., LLaMA) for generative tasks.
+
+Use Case ID: 15300
+
+Application: Generating AI-based summaries of customer phone call transcripts
+
+Key Methods: chat_completion(), fine_tune(), get_probabilities()
+
+
+
+
+
+Hardware Requirements:
+
+The current Copra production cluster is equipped with only a 32GB GPU.
+
+Running a single large model like LLaMA already leads to GPU throttling.
+
+When executing multiple validation tests in parallel, the hardware becomes a significant bottleneck, limiting both performance and scalability.
+
+To fully support large GenAI models and parallelized validation workflows, an upgrade in GPU resources is essential.
+
+
+
